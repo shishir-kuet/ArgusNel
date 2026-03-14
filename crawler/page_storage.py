@@ -1,28 +1,26 @@
-import json
 import os
+import json
 import hashlib
 
 
 class PageStorage:
 
     def __init__(self, storage_dir="data/pages"):
-
         self.storage_dir = storage_dir
+        os.makedirs(storage_dir, exist_ok=True)
 
-        if not os.path.exists(storage_dir):
-            os.makedirs(storage_dir)
-
-
-    def save_page(self, url, text):
+    def save_page(self, url, title, text, links):
 
         page_id = hashlib.md5(url.encode()).hexdigest()
 
-        page_data = {
+        filepath = os.path.join(self.storage_dir, f"{page_id}.json")
+
+        data = {
             "url": url,
-            "text": text
+            "title": title,
+            "text": text,
+            "links": links
         }
 
-        file_path = os.path.join(self.storage_dir, page_id + ".json")
-
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(page_data, f, ensure_ascii=False, indent=2)
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)

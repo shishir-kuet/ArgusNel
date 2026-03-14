@@ -1,8 +1,10 @@
+import json
+import os
+
 from indexer.index_storage import IndexStorage
 from search.query_processor import QueryProcessor
 from search.ranker import BM25Ranker
-import json
-import os
+from search.snippet_generator import SnippetGenerator
 
 
 class SearchEngine:
@@ -15,9 +17,11 @@ class SearchEngine:
         self.query_processor = QueryProcessor()
         self.ranker = BM25Ranker(self.index)
 
+        self.snippet_generator = SnippetGenerator()
+
         self.pages_dir = "data/pages"
 
-    def get_page_title(self, url):
+    def get_page_data(self, url):
 
         for filename in os.listdir(self.pages_dir):
 
@@ -27,15 +31,9 @@ class SearchEngine:
                 data = json.load(f)
 
             if data["url"] == url:
+                return data
 
-                text = data["text"]
-
-                # first sentence as title
-                title = text.split(".")[0][:120]
-
-                return title
-
-        return "No title"
+        return None
 
     def search(self, query, top_k=10):
 
@@ -52,12 +50,24 @@ class SearchEngine:
 
         for doc, score in ranked_docs[:top_k]:
 
-            title = self.get_page_title(doc)
+            page = self.get_page_data(doc)
+
+            if not page:
+                continue
+            
+            # Title boost
+            title_lower = page["title"].lower()
+
+            for term in tokens:
+                if term in title_lower:
+                    score += 3
+
+            snippet = self.snippet_generator.generate(page["text"], tokens)
 
             results.append({
+                "title": page["title"],
                 "url": doc,
-                "title": title,
-                "score": score
+                "snippet": snippet
             })
 
         return results

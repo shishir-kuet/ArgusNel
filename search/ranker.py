@@ -1,65 +1,48 @@
 import math
+from ranking.pagerank import PageRank
 
 
 class BM25Ranker:
 
-    def __init__(self, inverted_index, k1=1.5, b=0.75):
+    def __init__(self, index):
 
-        self.index = inverted_index
-        self.k1 = k1
-        self.b = b
+        self.index = index
 
-        # compute document statistics
-        self.doc_lengths = {}
-        self.avg_doc_length = 0
-        self.total_docs = 0
+        self.N = len({doc for term in index for doc in index[term]})
 
-        self._compute_doc_stats()
+        pagerank = PageRank()
+        self.page_ranks = pagerank.compute()
 
-    def _compute_doc_stats(self):
-
-        total_length = 0
-
-        for term in self.index:
-
-            for doc, freq in self.index[term].items():
-
-                if doc not in self.doc_lengths:
-                    self.doc_lengths[doc] = 0
-
-                self.doc_lengths[doc] += freq
-
-        self.total_docs = len(self.doc_lengths)
-
-        if self.total_docs > 0:
-            self.avg_doc_length = sum(self.doc_lengths.values()) / self.total_docs
-
-    def score(self, query_tokens):
+    def score(self, query_terms):
 
         scores = {}
 
-        for term in query_tokens:
+        for term in query_terms:
 
             if term not in self.index:
                 continue
 
-            postings = self.index[term]
-            df = len(postings)
+            docs = self.index[term]
 
-            idf = math.log((self.total_docs - df + 0.5) / (df + 0.5) + 1)
+            df = len(docs)
 
-            for doc, tf in postings.items():
+            idf = math.log((self.N - df + 0.5) / (df + 0.5) + 1)
 
-                doc_len = self.doc_lengths[doc]
+            for doc, tf in docs.items():
 
-                numerator = tf * (self.k1 + 1)
-                denominator = tf + self.k1 * (1 - self.b + self.b * (doc_len / self.avg_doc_length))
-
-                score = idf * (numerator / denominator)
+                bm25_score = tf * idf
 
                 if doc not in scores:
                     scores[doc] = 0
 
-                scores[doc] += score
+                scores[doc] += bm25_score
+         # Add PageRank influence
+        for doc in scores:
+            scores[doc] += self.page_ranks.get(doc, 0)        
+
+        # combine pagerank
+        for doc in scores:
+
+            scores[doc] += self.page_ranks.get(doc, 0)
 
         return scores

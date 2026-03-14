@@ -26,6 +26,7 @@ def main():
         for i, result in enumerate(results, start=1):
             print(f"{i}. {result['title']}")
             print(result["url"])
+            print(result["snippet"])
             print()
 
 

@@ -21,9 +21,6 @@ def main():
         for i, result in enumerate(results, start=1):
             print(f"{i}. {result['title']}")
             print(result["url"])
-            
-            if "snippet" in result:
-                print(result["snippet"])
             print()
 
 if __name__ == "__main__":

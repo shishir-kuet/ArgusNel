@@ -1,3 +1,5 @@
+from pydoc import html
+
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -67,8 +69,20 @@ class MainCrawler:
 
         soup = BeautifulSoup(html, "html.parser")
 
-        return soup.get_text(separator=" ", strip=True)
+        for tag in soup(["script","style","nav","footer","header"]):
+            tag.decompose()
 
+        text = soup.get_text(separator=" ", strip=True)
+        return text
+
+    def extract_title(self, html):
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        if soup.title:
+            return soup.title.get_text().strip()
+
+        return "No Title"
     def crawl(self, max_pages=50):
 
         crawled = 0
@@ -107,9 +121,12 @@ class MainCrawler:
                 print("Duplicate page skipped")
                 continue
 
-            self.storage.save_page(url, text)
-
+            title = self.extract_title(html)
             links = self.extract_links(html, url)
+
+            self.storage.save_page(url, title, text, links) 
+
+            
 
             print("Links found:", len(links))
 
