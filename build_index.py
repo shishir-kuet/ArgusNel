@@ -6,10 +6,8 @@ def main():
 
     print("Starting index building...")
 
-    # create index builder
-    builder = IndexBuilder()
-
     # build inverted index
+    builder = IndexBuilder()
     inverted_index = builder.build()
 
     print("Total terms indexed:", len(inverted_index))
