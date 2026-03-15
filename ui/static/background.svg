@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1">
+      <stop offset="0" stop-color="#e6f7fb"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" x2="1">
+      <stop offset="0" stop-color="#1a73e8" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#0ea5a9" stop-opacity="0.9" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg)" />
+  <g transform="translate(0,420)">
+    <path d="M0,180 C200,80 400,260 800,200 C1200,140 1400,260 1600,200 L1600,900 L0,900 Z" fill="url(#wave)" opacity="0.12"/>
+    <path d="M0,240 C260,140 420,320 800,260 C1180,200 1400,320 1600,260 L1600,900 L0,900 Z" fill="url(#wave)" opacity="0.16"/>
+    <path d="M0,300 C220,220 420,380 800,320 C1180,260 1400,380 1600,320 L1600,900 L0,900 Z" fill="url(#wave)" opacity="0.22"/>
+  </g>
+</svg>

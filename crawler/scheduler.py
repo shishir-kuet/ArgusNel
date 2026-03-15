@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 class CrawlScheduler:
 
-    def __init__(self, delay=1):
+    def __init__(self, delay:float):
         self.delay = delay
         self.domain_last_access = {}
 

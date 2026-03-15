@@ -1,0 +1,13 @@
+{
+  "url": "http://af.wikipedia.org/wiki/Spesiaal:ApiHelp/abusefiltercheckmatch",
+  "title": "MediaWiki API help - Wikipedia",
+  "text": "MediaWiki API help - Wikipedia MediaWiki API help This is an auto-generated MediaWiki API documentation page. Documentation and examples: https://www.mediawiki.org/wiki/Special:MyLanguage/API:Main_page action=abusefiltercheckmatch ( main | abusefiltercheckmatch ) This module requires read rights. Source: Abuse Filter License: GPL-2.0-or-later Check to see if an AbuseFilter matches a set of variables, an edit, or a logged AbuseFilter event. vars, rcid of logid word vereis, maar slegs een mag gebruik word. Specific parameters: Other general parameters are available. filter The full filter text to check for a match. This parameter is required. vars JSON encoded array of variables to test against. rcid Recent change ID to check against. Type: integer logid Abuse filter log ID to check against. Type: integer Example: Test if recent change ID 15 matches a simple filter api.php?action=abusefiltercheckmatch&filter=!(\"autoconfirmed\"%20in%20user_groups)&rcid=15 [open in sandbox] Ontsluit van \" https://af.wikipedia.org/wiki/Spesiaal:ApiHelp \"",
+  "links": [
+    "https://www.mediawiki.org/wiki/Special:MyLanguage/API:Main_page",
+    "http://af.wikipedia.org/wiki/Spesiaal:ApiHelp/main",
+    "http://af.wikipedia.org/wiki/Spesiaal:Weergawe/License/Abuse_Filter",
+    "http://af.wikipedia.org/w/api.php?action=abusefiltercheckmatch&filter=!(\"autoconfirmed\"%20in%20user_groups)&rcid=15",
+    "http://af.wikipedia.org/wiki/Spesiaal:ApiSandbox#action=abusefiltercheckmatch&filter=!(\"autoconfirmed\"%20in%20user_groups)&rcid=15",
+    "https://af.wikipedia.org/wiki/Spesiaal:ApiHelp"
+  ]
+}
